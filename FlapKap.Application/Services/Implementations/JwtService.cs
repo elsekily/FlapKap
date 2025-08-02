@@ -97,7 +97,6 @@ public class JwtService : IJwtService
         {
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new(ClaimTypes.Name, user.UserName ?? string.Empty),
-            new(ClaimTypes.Email, user.Email ?? string.Empty)
         };
 
         var roles = await userManager.GetRolesAsync(user);

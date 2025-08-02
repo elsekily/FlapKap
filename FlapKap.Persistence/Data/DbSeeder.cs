@@ -46,6 +46,7 @@ public static class DbSeeder
             user = new ApplicationUser
             {
                 UserName = username,
+                Email = $"{username}@flapkap.com",
             };
 
             var result = await userManager.CreateAsync(user, "Test123!");

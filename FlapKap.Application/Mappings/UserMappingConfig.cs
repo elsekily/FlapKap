@@ -15,11 +15,11 @@ public static class UserMappingConfig
         TypeAdapterConfig<CreateUserDto, ApplicationUser>
             .NewConfig()
             .Map(dest => dest.Id, src => 0)
-            .Map(dest => dest.NormalizedUserName, src => src.Username.ToUpper());
+            .Map(dest => dest.Email, src => $"{src.Username}@flapkap.com");
 
 
         TypeAdapterConfig<UpdateUserDto, ApplicationUser>
             .NewConfig()
-            .Map(dest => dest.NormalizedUserName, src => src.Username.ToUpper());
+            .Map(dest => dest.Email, src => $"{src.Username}@flapkap.com");
     }
 }
