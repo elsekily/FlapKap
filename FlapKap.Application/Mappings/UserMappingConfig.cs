@@ -15,14 +15,11 @@ public static class UserMappingConfig
         TypeAdapterConfig<CreateUserDto, ApplicationUser>
             .NewConfig()
             .Map(dest => dest.Id, src => 0)
-            .Map(dest => dest.NormalizedEmail, src => src.Email.ToUpper())
-            .Map(dest => dest.UserName, src => src.Email.Split("@",StringSplitOptions.None).FirstOrDefault())
-            .Map(dest => dest.NormalizedUserName, src => src.Email.Split("@", StringSplitOptions.None).FirstOrDefault().ToUpper());
+            .Map(dest => dest.NormalizedUserName, src => src.Username.ToUpper());
 
 
         TypeAdapterConfig<UpdateUserDto, ApplicationUser>
             .NewConfig()
-            .Map(dest => dest.NormalizedEmail, src => src.Email.ToUpper())
-            .Map(dest => dest.NormalizedUserName, src => src.Email.Split("@", StringSplitOptions.None).FirstOrDefault().ToUpper());
+            .Map(dest => dest.NormalizedUserName, src => src.Username.ToUpper());
     }
-} 
+}

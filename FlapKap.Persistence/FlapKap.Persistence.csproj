@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FlapKap.Application\FlapKap.Application.csproj" />
     <ProjectReference Include="..\FlapKap.Domain\FlapKap.Domain.csproj" />
   </ItemGroup>
 

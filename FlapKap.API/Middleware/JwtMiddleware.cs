@@ -15,10 +15,9 @@ public class JwtMiddleware
 
     public async Task InvokeAsync(
         HttpContext context,
-        IJwtService jwtService,
-        ITokenBlacklistService tokenBlacklistService)
+        IJwtService jwtService)
     {
-        if (tokenBlacklistService.IsTokenBlacklisted())
+        if (jwtService.IsTokenBlacklisted())
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             await context.Response.WriteAsync("Token has been revoked");

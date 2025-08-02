@@ -17,21 +17,21 @@ public class UserService : IUserService
     private readonly IUnitOfWork unitOfWork;
     private readonly UserManager<ApplicationUser> userManager;
     private readonly RoleManager<ApplicationRole> roleManager;
-    private readonly ITokenBlacklistService tokenBlacklistService;
+    private readonly IJwtService jwtService;
     private readonly IValidator<CreateUserDto> createUservalidator;
     private readonly IValidator<UpdateUserDto> updateUservalidator;
 
     public UserService(IUnitOfWork unitOfWork,
                        UserManager<ApplicationUser> userManager,
                        RoleManager<ApplicationRole> roleManager,
-                       ITokenBlacklistService tokenBlacklistService,
+                       IJwtService jwtService,
                        IValidator<CreateUserDto> createUservalidator,
                        IValidator<UpdateUserDto> updateUservalidator)
     {
         this.unitOfWork = unitOfWork;
         this.userManager = userManager;
         this.roleManager = roleManager;
-        this.tokenBlacklistService = tokenBlacklistService;
+        this.jwtService = jwtService;
         this.createUservalidator = createUservalidator;
         this.updateUservalidator = updateUservalidator;
     }
@@ -79,7 +79,8 @@ public class UserService : IUserService
             var errors = result.Errors.Select(e => e.Description).ToList();
             return Result<UserResponseDto>.Failure(errors);
         }
-        
+
+        jwtService.BlacklistToken();
         var updatedUser = await GetUserByUsernameAsync(user.UserName);
         return updatedUser;
     }
@@ -96,8 +97,8 @@ public class UserService : IUserService
             var errors = result.Errors.Select(e => e.Description).ToList();
             return Result.Failure(errors);
         }
-        
-        tokenBlacklistService.BlacklistToken();
+
+        jwtService.BlacklistToken();
         return Result.Success();
     }
 

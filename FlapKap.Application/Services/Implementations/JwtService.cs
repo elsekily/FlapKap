@@ -10,6 +10,8 @@ using FlapKap.Application.DTOs.Auth;
 using FlapKap.Domain.Common;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace FlapKap.Application.Services.Implementations;
 
@@ -17,11 +19,19 @@ public class JwtService : IJwtService
 {
     private readonly JwtSettings jwtSettings;
     private readonly UserManager<ApplicationUser> userManager;
+    private readonly IMemoryCache cache;
+    private readonly IHttpContextAccessor httpContextAccessor;
+    private const string CacheKeyPrefix = "BlacklistedToken_";
 
-    public JwtService(IOptions<JwtSettings> jwtSettings, UserManager<ApplicationUser> userManager)
+    public JwtService(IOptions<JwtSettings> jwtSettings,
+                      UserManager<ApplicationUser> userManager, 
+                      IMemoryCache cache, 
+                      IHttpContextAccessor httpContextAccessor)
     {
         this.jwtSettings = jwtSettings.Value;
         this.userManager = userManager;
+        this.cache = cache;
+        this.httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<Result<TokenResponseDto>> GenerateTokenAsync(ApplicationUser user)
@@ -43,6 +53,43 @@ public class JwtService : IJwtService
         {
             Token = new JwtSecurityTokenHandler().WriteToken(token),
         });
+    }
+    public void BlacklistToken()
+    {
+        var authHeader = httpContextAccessor.HttpContext?.Request.Headers["Authorization"].FirstOrDefault();
+
+        if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+            return;
+
+        var token = authHeader.Substring("Bearer ".Length);
+
+        var cacheKey = $"{CacheKeyPrefix}{token}";
+        var cacheOptions = new MemoryCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(24)
+        };
+
+        cache.Set(cacheKey, true, cacheOptions);
+    }
+    public bool IsTokenBlacklisted()
+    {
+        var authHeader = httpContextAccessor.HttpContext?.Request.Headers["Authorization"].FirstOrDefault();
+
+        if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+            return false;
+
+        var token = authHeader.Substring("Bearer ".Length);
+        var cacheKey = $"{CacheKeyPrefix}{token}";
+
+
+        var x = cache.TryGetValue(cacheKey, out _);
+        return x;
+    }
+    public int GetUserId()
+    {
+        var id = httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        int.TryParse(id, out var userId);
+        return userId;
     }
     private async Task<List<Claim>> GetUserClaimsAsync(ApplicationUser user)
     {

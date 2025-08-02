@@ -21,8 +21,8 @@ public static class DbSeeder
     }
     public static async Task SeedUsersAsync(UserManager<ApplicationUser> userManager)
     {
-        await CreateUserWithRole(userManager, "testbuyer@test.com", RoleConstants.Buyer);
-        await CreateUserWithRole(userManager, "testseller@test.com", RoleConstants.Seller);
+        await CreateUserWithRole(userManager, "testbuyer", RoleConstants.Buyer);
+        await CreateUserWithRole(userManager, "testseller", RoleConstants.Seller);
     }
 
     public static async Task SeedAsync(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
@@ -38,17 +38,14 @@ public static class DbSeeder
         await context.SaveChangesAsync();
     }
 
-    private static async Task CreateUserWithRole(UserManager<ApplicationUser> userManager, string email, string role)
+    private static async Task CreateUserWithRole(UserManager<ApplicationUser> userManager, string username, string role)
     {
-        var user = await userManager.FindByEmailAsync(email);
+        var user = await userManager.FindByEmailAsync(username);
         if (user == null)
         {
             user = new ApplicationUser
             {
-                UserName = email,
-                Email = email,
-                
-                EmailConfirmed = false
+                UserName = username,
             };
 
             var result = await userManager.CreateAsync(user, "Test123!");

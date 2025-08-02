@@ -8,4 +8,7 @@ namespace FlapKap.Application.Services.Core;
 public interface IJwtService
 {
     Task<Result<TokenResponseDto>> GenerateTokenAsync(ApplicationUser user);
+    void BlacklistToken();
+    bool IsTokenBlacklisted();
+    int GetUserId();
 }

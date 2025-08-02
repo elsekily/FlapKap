@@ -1,5 +1,4 @@
 using FlapKap.Application.DTOs.Auth;
-using FlapKap.Application.DTOs.User;
 using FlapKap.Application.Services.Core;
 using FlapKap.Domain.Common;
 using FlapKap.Domain.Entities;

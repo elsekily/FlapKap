@@ -14,18 +14,14 @@ namespace FlapKap.API.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly IUserService userService;
-    private readonly ITokenBlacklistService tokenBlacklistService;
 
-    public UsersController(IUserService userService, ITokenBlacklistService tokenBlacklistService)
+    public UsersController(IUserService userService)
     {
         this.userService = userService;
-        this.tokenBlacklistService = tokenBlacklistService;
     }
 
     [HttpGet("data")]
     [Authorize(Policy = AuthConstants.MatchUsername)]
-    //[Authorize(Roles = RoleConstants.Buyer)]
-    //[AllowAnonymous]
     public async Task<IActionResult> GetUserByUserName([FromQuery] string username)
     {
         var result = await userService.GetUserByUsernameAsync(username);

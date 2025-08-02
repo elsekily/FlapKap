@@ -20,7 +20,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         return await dbContext.Set<T>().FindAsync(id);
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public async Task<IList<T>> GetAllAsync()
     {
         return await dbContext.Set<T>().ToListAsync();
     }
