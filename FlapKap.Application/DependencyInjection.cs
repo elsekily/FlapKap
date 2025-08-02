@@ -17,8 +17,9 @@ public static class DependencyInjection
     {
         // Configure JWT Settings
         services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
-      
+
         // Register Mapster
+        TypeAdapterConfig.GlobalSettings.Scan(typeof(DependencyInjection).Assembly);
         services.AddMapster();
 
         // Register validators

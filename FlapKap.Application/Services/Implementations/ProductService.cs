@@ -77,9 +77,6 @@ public class ProductService : IProductService
         if (existing.SellerId != userId)
             return Result.Failure("Access denied. You are not the owner.");
 
-        updated.SellerId = userId;
-
-
         updated.Adapt(existing);
         await unitOfWork.SaveChangesAsync();
 

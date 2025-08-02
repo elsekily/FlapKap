@@ -6,5 +6,4 @@ public class UpdateProductDto
     public string Name { get; set; } = default!;
     public int AmountAvailable { get; set; }
     public decimal Cost { get; set; }
-    public int SellerId { get; set; }
 }

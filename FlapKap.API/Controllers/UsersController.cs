@@ -66,7 +66,7 @@ public class UsersController : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete]
     [Authorize(Policy = AuthConstants.MatchUsername)]
     public async Task<IActionResult> DeleteUser([FromQuery] string username)
     {

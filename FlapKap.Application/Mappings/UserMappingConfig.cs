@@ -1,25 +1,28 @@
+using FlapKap.Application.DTOs.Product;
 using FlapKap.Application.DTOs.User;
 using FlapKap.Domain.Entities;
 using Mapster;
 
 namespace FlapKap.Application.Mappings;
 
-public static class UserMappingConfig
+
+public class UserMappingConfig : IRegister
 {
-    public static void ConfigureUserMappings()
+    public void Register(TypeAdapterConfig config)
     {
-        TypeAdapterConfig<ApplicationUser, UserResponseDto>
-            .NewConfig()
+        config.NewConfig<ApplicationUser, UserResponseDto>()
             .Map(dest => dest.Roles, src => new List<string>());
 
-        TypeAdapterConfig<CreateUserDto, ApplicationUser>
-            .NewConfig()
+
+        config.NewConfig<CreateUserDto, ApplicationUser>()
             .Map(dest => dest.Id, src => 0)
-            .Map(dest => dest.Email, src => $"{src.Username}@flapkap.com");
+            .Map(dest => dest.Email, src => $"{src.Username}@flapkap.com")
+            .Map(dest => dest.UserName, src => src.Username)
+            .Map(dest => dest.PhoneNumber, src => src.PhoneNumber);
 
-
-        TypeAdapterConfig<UpdateUserDto, ApplicationUser>
-            .NewConfig()
-            .Map(dest => dest.Email, src => $"{src.Username}@flapkap.com");
+        config.NewConfig<UpdateUserDto, ApplicationUser>()
+            .Map(dest => dest.Email, src => $"{src.Username}@flapkap.com")
+            .Map(dest => dest.UserName, src => src.Username)
+            .Map(dest => dest.PhoneNumber, src => src.PhoneNumber);
     }
 }
