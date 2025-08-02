@@ -14,9 +14,7 @@ namespace FlapKap.Application.Services.Implementations;
 
 public class UserService : IUserService
 {
-    private readonly IUnitOfWork unitOfWork;
     private readonly UserManager<ApplicationUser> userManager;
-    private readonly RoleManager<ApplicationRole> roleManager;
     private readonly IJwtService jwtService;
     private readonly IValidator<CreateUserDto> createUservalidator;
     private readonly IValidator<UpdateUserDto> updateUservalidator;
@@ -28,9 +26,7 @@ public class UserService : IUserService
                        IValidator<CreateUserDto> createUservalidator,
                        IValidator<UpdateUserDto> updateUservalidator)
     {
-        this.unitOfWork = unitOfWork;
         this.userManager = userManager;
-        this.roleManager = roleManager;
         this.jwtService = jwtService;
         this.createUservalidator = createUservalidator;
         this.updateUservalidator = updateUservalidator;

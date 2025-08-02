@@ -66,7 +66,7 @@ public class TransactionService : ITransactionService
                 if (product.AmountAvailable < productIdAmountPairs[product.Id])
                 {
                     await unitOfWork.RollbackTransactionAsync();
-                    return Result.Failure($"Product '{product.Id}' has only {product.AmountAvailable} items left.");
+                    return Result.Failure($"Product {product.Id} has only {product.AmountAvailable} items left.");
                 }
 
                 totalCost += product.Cost * productIdAmountPairs[product.Id];
@@ -115,7 +115,7 @@ public class TransactionService : ITransactionService
 
         return Result<string>.Success($"Deposit successful of Total Amount:{deposit.Total} and Total Balance:{user.Balance}.");
     }
-    public async Task<Result> ResetDepositAsync()
+    public async Task<Result> ResetWithdrawAsync()
     {
         var user = await userRepository.GetUserById(jwtService.GetUserId());
         if (user == null)

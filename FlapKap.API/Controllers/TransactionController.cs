@@ -41,7 +41,7 @@ public class TransactionController : ControllerBase
     [HttpPost("reset")]
     public async Task<IActionResult> Reset()
     {
-        var result = await transactionService.ResetDepositAsync();
+        var result = await transactionService.ResetWithdrawAsync();
         if (!result.IsSuccess)
             return BadRequest(result);
 

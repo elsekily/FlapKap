@@ -12,5 +12,5 @@ public interface ITransactionService
 {
     Task<Result> DepositAsync(DepositCoinsDto deposit);
     Task<Result> BuyAsync(BuyRequestDto request);
-    Task<Result> ResetDepositAsync();
+    Task<Result> ResetWithdrawAsync();
 }
