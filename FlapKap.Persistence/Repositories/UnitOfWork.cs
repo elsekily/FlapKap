@@ -1,5 +1,6 @@
 using FlapKap.Domain.Interfaces;
 using FlapKap.Persistence.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace FlapKap.Persistence.Repositories;
@@ -19,9 +20,9 @@ public class UnitOfWork : IUnitOfWork
         return await dbContext.SaveChangesAsync();
     }
 
-    public async Task BeginTransactionAsync()
+    public async Task BeginTransactionAsync(System.Data.IsolationLevel isolationLevel = System.Data.IsolationLevel.ReadCommitted)
     {
-        transaction = await dbContext.Database.BeginTransactionAsync();
+        transaction = await dbContext.Database.BeginTransactionAsync(isolationLevel);
     }
 
     public async Task CommitTransactionAsync()

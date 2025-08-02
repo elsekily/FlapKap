@@ -9,6 +9,7 @@ using FlapKap.Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;
+using System.Data;
 
 namespace FlapKap.Application.Services.Implementations;
 
@@ -41,7 +42,7 @@ public class TransactionService : ITransactionService
         if (!validation.IsValid)
             return Result<ValidationResult>.Failure("Please validate data!", validation);
 
-        await unitOfWork.BeginTransactionAsync();
+        await unitOfWork.BeginTransactionAsync(System.Data.IsolationLevel.RepeatableRead);
         try
         {
             var products = await productRepository.GetProductsByIds(request.Products.Select(p => p.ProductId).ToList());
