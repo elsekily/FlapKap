@@ -29,6 +29,7 @@ public static class DependencyInjection
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<ITransactionService, TransactionService>();
 
         return services;
     }

@@ -11,5 +11,8 @@ internal class ApplicationUserConfiguration : IEntityTypeConfiguration<Applicati
         builder.Property(m => m.UserName)
             .HasMaxLength(50)
             .IsRequired();
+
+        builder.Property(m => m.Balance)
+            .IsRequired();
     }
 }

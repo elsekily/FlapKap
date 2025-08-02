@@ -25,7 +25,7 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> GetUserByUserName([FromQuery] string username)
     {
         var result = await userService.GetUserByUsernameAsync(username);
-        
+
         if (!result.IsSuccess)
             return NotFound(result);
 
@@ -37,7 +37,7 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> CreateBuyer(CreateUserDto createUserDto)
     {
         var result = await userService.CreateUserAsync(createUserDto, RoleConstants.Buyer);
-        
+
         if (!result.IsSuccess)
             return BadRequest(result);
 
@@ -47,7 +47,7 @@ public class UsersController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> CreateSeller(CreateUserDto createUserDto)
     {
-        var result = await userService.CreateUserAsync(createUserDto,RoleConstants.Seller);
+        var result = await userService.CreateUserAsync(createUserDto, RoleConstants.Seller);
 
         if (!result.IsSuccess)
             return BadRequest(result);
@@ -71,10 +71,10 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> DeleteUser([FromQuery] string username)
     {
         var result = await userService.DeleteUserAsync(username);
-        
+
         if (!result.IsSuccess)
             return NotFound(result);
 
         return NoContent();
     }
-} 
+}

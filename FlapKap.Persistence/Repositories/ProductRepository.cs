@@ -2,6 +2,7 @@
 using FlapKap.Domain.Entities;
 using FlapKap.Domain.Interfaces;
 using FlapKap.Persistence.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,4 +17,10 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
     {
     }
 
+    public async Task<List<Product>> GetProductsByIds(List<int> ids)
+    {
+        return await dbContext.Products
+                            .Where(p => ids.Contains(p.Id))
+                            .ToListAsync(); 
+    }
 }
